@@ -1,0 +1,29 @@
+<md-toolbar class="fixed-toolbar">
+    <div class="md-toolbar-tools">
+        {{ assessment.title }}
+        <span flex></span>
+        <md-button ng-if="false">
+            Help
+        </md-button>
+        <md-button ng-click="editor.reset()">
+            Reset
+        </md-button>
+        <md-button class="md-button-colored" ng-click="assessment.submit()">
+            Submit code
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content class="md-content-padding" style="padding-top:66px;">
+
+    <p>
+        {{ assessment.instructions }}
+    </p>
+
+    <section ui-ace="AceConfig.java" ng-model="Submissions.current.code"></section>
+
+    <section class="result" ng-transclude>
+
+    </section>
+    <!--<submission-result></submission-result>-->
+
+</md-content>

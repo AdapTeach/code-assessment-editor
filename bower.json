@@ -1,0 +1,14 @@
+{
+  "name": "angular-code-assessment",
+  "description": "directive to quickly set up a code editor for code assessment",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "dependencies": {
+    "angular": "*",
+    "angular-ui-ace" : "*",
+    "angular-material" : "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  }
+}
