@@ -5,12 +5,18 @@
     return {
       restrict : 'EA',
       scope : {
-        assessment : '='
+        assessmentId : '@'
       },
       templateUrl :'assessment.tpl.html',
-      controller : function(atAssessment,atSubmission){
+      controller : function(atAssessment,atSubmission,$mdToast){
         angular.extend(this,atAssessment.current);
-
+        atAssessment.load(this.asssessmentId).success(function(assessment){
+          this.assessment = atAssessment.current
+        }).error(function(){
+          $mdToast.show({
+            template : '<md-toast>Error !</md-toast>'
+          })
+        });
         this.reset = atSubmission.resetCurrent;
         this.submit = atSubmission.submitCurrent;
       },
