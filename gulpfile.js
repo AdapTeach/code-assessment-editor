@@ -9,7 +9,7 @@ var gulp = require('gulp'),
   templateCache = require('gulp-angular-templatecache')
 
 // PATHS
-var pathToJsSource = ['src/index.js','src/templates.js','src/**/*.js'],
+var pathToJsSource = ['src/*.js','src/**/*.js'],
   pathToTemplates = 'src/**/*.tpl.html';
 
 gulp.task('default', ['build'], function () {
