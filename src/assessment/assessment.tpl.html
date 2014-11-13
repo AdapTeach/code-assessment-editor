@@ -19,9 +19,9 @@
         {{ assessment.instructions }}
     </p>
 
-    <section ui-ace="AceConfig.java" ng-model="Submissions.current.code" style="height:500px;width:100%;"></section>
+    <section ui-ace="AceConfig" ng-model="Submissions.current.code" style="height:500px;width:100%;"></section>
 
-    <section class="result" ng-transclude>
+    <section class="result" ng-transclude ng-show="Submissions.current.result">
 
     </section>
     <!--<submission-result></submission-result>-->

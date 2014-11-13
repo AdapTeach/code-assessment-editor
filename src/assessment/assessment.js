@@ -19,7 +19,8 @@
     return {
       restrict : 'EA',
       scope : {
-        assessmentId : '='
+        assessmentId : '=',
+        aceConfig : '='
       },
       templateUrl :'assessment/assessment.tpl.html',
       controller : 'atAssessmentCtrl',
