@@ -1,8 +1,8 @@
 (function(angular){
   'use strict';
 
-  function atAssessmentCtrl(atAssessment,atSubmission,$mdToast){
-    console.log(this)
+  function atAssessmentCtrl($scope,atAssessment,atSubmission,$mdToast){
+    console.log(this,$scope);
     atAssessment.load(this.asssessmentId).success(function(assessment){
       this.assessment = atAssessment.current
     }).error(function(){
