@@ -3,7 +3,7 @@
 
   function atAssessmentCtrl($scope,atAssessment,atSubmission,$mdToast){
     console.log(this,$scope);
-    atAssessment.load($scope.asssessmentId).success(function(assessment){
+    atAssessment.load($scope.assessmentId).success(function(assessment){
       this.assessment = atAssessment.current
     }).error(function(){
       $mdToast.show({
