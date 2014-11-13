@@ -18,7 +18,7 @@
     return {
       restrict : 'EA',
       scope : {
-        assessmentId : '@'
+        assessmentId : '='
       },
       templateUrl :'assessment.tpl.html',
       controller : 'atAssessmentCtrl',
