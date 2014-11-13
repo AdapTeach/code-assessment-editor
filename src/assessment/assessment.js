@@ -2,7 +2,7 @@
   'use strict';
 
   function atAssessmentCtrl(atAssessment,atSubmission,$mdToast){
-    angular.extend(this,atAssessment.current);
+    console.log(this)
     atAssessment.load(this.asssessmentId).success(function(assessment){
       this.assessment = atAssessment.current
     }).error(function(){
