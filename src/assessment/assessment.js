@@ -2,10 +2,10 @@
   'use strict';
 
   function atAssessmentCtrl($scope,atAssessment,atSubmission,$mdToast){
-    console.log(this,$scope);
     atAssessment.load($scope.assessmentId).success(function(){
       $scope.assessment = atAssessment.current;
       atSubmission.current.code = angular.copy(atAssessment.current.startCode);
+      $scope.submission = atSubmission;
     }).error(function(){
       $mdToast.show({
         template : '<md-toast>Error !</md-toast>'
