@@ -1,6 +1,19 @@
 (function(angular){
   'use strict';
 
+  function atAssessmentCtrl(atAssessment,atSubmission,$mdToast){
+    angular.extend(this,atAssessment.current);
+    atAssessment.load(this.asssessmentId).success(function(assessment){
+      this.assessment = atAssessment.current
+    }).error(function(){
+      $mdToast.show({
+        template : '<md-toast>Error !</md-toast>'
+      })
+    });
+    this.reset = atSubmission.resetCurrent;
+    this.submit = atSubmission.submitCurrent;
+  }
+
   function atAssessmentEditor(){
     return {
       restrict : 'EA',
@@ -8,18 +21,7 @@
         assessmentId : '@'
       },
       templateUrl :'assessment.tpl.html',
-      controller : function(atAssessment,atSubmission,$mdToast){
-        angular.extend(this,atAssessment.current);
-        atAssessment.load(this.asssessmentId).success(function(assessment){
-          this.assessment = atAssessment.current
-        }).error(function(){
-          $mdToast.show({
-            template : '<md-toast>Error !</md-toast>'
-          })
-        });
-        this.reset = atSubmission.resetCurrent;
-        this.submit = atSubmission.submitCurrent;
-      },
+      controller : 'atAssessmentCtrl',
       controllerAs : 'editor',
       transclude : true
     }
@@ -35,7 +37,7 @@
       angular.extend(options,param);
     };
 
-    function Assessment(){
+    function Assessment($http){
       var assessment = {};
 
       assessment.current = {};
@@ -57,6 +59,7 @@
     'ui.ace',
     'at.assessment.submission'
   ]).directive('atAssessmentEditor',atAssessmentEditor)
+    .controller('atAssessmentCtrl',atAssessmentCtrl)
     .provider('atAssessment',atAssessmentProvider);
 })(angular);
 
