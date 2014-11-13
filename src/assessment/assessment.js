@@ -3,15 +3,15 @@
 
   function atAssessmentCtrl($scope,atAssessment,atSubmission,$mdToast){
     console.log(this,$scope);
-    atAssessment.load($scope.assessmentId).success(function(assessment){
-      this.assessment = atAssessment.current
+    atAssessment.load($scope.assessmentId).success(function(){
+      $scope.assessment = atAssessment.current
     }).error(function(){
       $mdToast.show({
         template : '<md-toast>Error !</md-toast>'
       })
     });
-    this.reset = atSubmission.resetCurrent;
-    this.submit = atSubmission.submitCurrent;
+    $scope.reset = atSubmission.resetCurrent;
+    $scope.submit = atSubmission.submitCurrent;
   }
 
   function atAssessmentEditor(){
@@ -22,7 +22,6 @@
       },
       templateUrl :'assessment.tpl.html',
       controller : 'atAssessmentCtrl',
-      controllerAs : 'editor',
       transclude : true
     }
   }
