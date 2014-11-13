@@ -20,7 +20,7 @@
       scope : {
         assessmentId : '='
       },
-      templateUrl :'assessment.tpl.html',
+      templateUrl :'assessment/assessment.tpl.html',
       controller : 'atAssessmentCtrl',
       transclude : true
     }
