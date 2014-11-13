@@ -32,7 +32,7 @@
       submission.submit = function (assessment, submittedCode) {
         $mdDialog.hide();
         $mdDialog.show({
-          templateUrl: 'submission/submissionProgressDialog.html',
+          templateUrl: 'submission/submissionProgressDialog.tpl.html',
           clickOutsideToClose: false,
           escapeToClose: false
         });
