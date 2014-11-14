@@ -11,7 +11,11 @@
     "gulp-util": "*",
     "gulp-uglify": "*",
     "gulp-sourcemaps": "*",
-    "gulp-ng-annotate" : "*",
-    "gulp-angular-templatecache" : "*"
+    "gulp-ng-annotate": "*",
+    "gulp-angular-templatecache": "*",
+    "connect-livereload": "*",
+    "gulp-livereload": "*",
+    "express": "*",
+    "tiny-lr": "*"
   }
 }

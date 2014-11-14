@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "dependencies": {
     "angular": "*",
-    "angular-ui-ace" : "*",
-    "angular-material" : "*"
+    "angular-ui-ace": "*",
+    "angular-material": "*"
   },
   "devDependencies": {
     "angular-mocks": "*"

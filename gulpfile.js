@@ -1,55 +1,130 @@
 var gulp = require('gulp'),
-  concat = require('gulp-concat'),
-  jshint = require('gulp-jshint'),
-  runSequence = require('run-sequence'),
-  del = require('del'),
-  uglify = require('gulp-uglify'),
-  sourcemaps = require('gulp-sourcemaps'),
-  annotate = require('gulp-ng-annotate'),
-  templateCache = require('gulp-angular-templatecache')
+    concat = require('gulp-concat'),
+    jshint = require('gulp-jshint'),
+    runSequence = require('run-sequence'),
+    del = require('del'),
+    uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
+    annotate = require('gulp-ng-annotate'),
+    templateCache = require('gulp-angular-templatecache'),
+    lrserver = require('tiny-lr')(),
+    express = require('express'),
+    refresh = require('gulp-livereload'),
+    livereload = require('connect-livereload');
+
+
+var livereloadport = 35729,
+    serverport = 5040;
+
+
+// DEV SERVER
+var devServer = express();
+devServer.use(livereload({port: livereloadport}));
+devServer.use(express.static('./src'));
+devServer.all('/*', function (req, res) {
+    res.sendFile('demo/index.html', {root: 'src'});
+});
+
 
 // PATHS
-var pathToJsSource = ['src/*.js','src/**/*.js'],
-  pathToTemplates = 'src/**/*.tpl.html';
+var pathToJsSource = 'src/app/**/*.js',
+    pathToDemoJsSource = 'src/demo/**/*.js',
+    pathToDemoIndexFile = 'src/demo/index.html',
+    pathToTemplates = 'src/**/*.tpl.html';
 
-gulp.task('default', ['build'], function () {
+// DEV
+gulp.task('default', ['dev'], function () {
 });
 
-gulp.task('cacheTemplates', function () {
-  gulp.src(pathToTemplates)
-    .pipe(templateCache({module: 'at.assessment'}))
-    .pipe(gulp.dest('src'))
+gulp.task('dev', [
+    'buildDev',
+    'startDevServer',
+    'watchSource'
+], function () {
 });
 
-gulp.task('buildJs', function () {
-  gulp.src(pathToJsSource)
-    .pipe(sourcemaps.init())
-    .pipe(concat('at-code-assessment.js'))
-    .pipe(annotate())
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist'));
+gulp.task('buildDev', [
+    'concatJs'
+    //,
+    //'concatTemplates'
+], function () {
+});
+
+gulp.task('concatJs', function () {
+    gulp.src(pathToJsSource)
+        .pipe(sourcemaps.init())
+        .pipe(concat('all-source.js'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('src/build'))
+        .pipe(refresh(lrserver));
+});
+
+gulp.task('concatTemplates', function () {
+    gulp.src(pathToTemplates)
+        .pipe(templateCache({module: 'demo.app'}))
+        .pipe(gulp.dest('src/build'))
+        .pipe(refresh(lrserver));
+});
+
+gulp.task('startDevServer', function () {
+    devServer.listen(serverport);
+    lrserver.listen(livereloadport);
 });
 
 gulp.task('watchSource', function () {
-  gulp.watch(pathToJsSource, ['buildJs', 'lint']);
+    gulp.watch(pathToJsSource, ['concatJs', 'lint']);
+    gulp.watch(pathToDemoJsSource, ['reloadIndex']);
+    gulp.watch(pathToDemoIndexFile, ['reloadIndex']);
+    gulp.watch(pathToTemplates, ['cacheTemplates']);
 });
 
+gulp.task('reloadIndex', function () {
+    gulp.src(pathToDemoIndexFile)
+        .pipe(refresh(lrserver));
+});
 
 gulp.task('lint', function () {
-  gulp.src(pathToJsSource)
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+    gulp.src(pathToJsSource)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
 });
 
 
-gulp.task('build',['cacheTemplates','cleanDistFolder'], function () {
-    runSequence(
-      'buildJs'
-    );
-  }
+// DIST
+gulp.task('dist', ['cacheTemplates'], function () {
+        runSequence(
+            'cleanBuildFolder',
+            'cleanDistFolder',
+            'distJs',
+            'distMinifiedJs'
+        );
+    }
 );
 
+gulp.task('cacheTemplates', function () {
+    gulp.src(pathToTemplates)
+        .pipe(templateCache({module: 'at.assessment'}))
+        .pipe(gulp.dest('src/build'))
+});
+
+gulp.task('cleanBuildFolder', function (cb) {
+    del('src/build', cb);
+});
+
 gulp.task('cleanDistFolder', function (cb) {
-  del('dist', cb);
+    del('dist', cb);
+});
+
+gulp.task('distJs', function () {
+    gulp.src([pathToJsSource, 'src/build/templates.js'])
+        .pipe(concat('at-code-assessment.js'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('distMinifiedJs', function () {
+    gulp.src([pathToJsSource, 'src/build/templates.js'])
+        .pipe(concat('at-code-assessment-min.js'))
+        .pipe(annotate())
+        .pipe(uglify())
+        .pipe(gulp.dest('dist'));
 });
