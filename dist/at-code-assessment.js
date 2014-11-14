@@ -9,11 +9,13 @@
 (function (angular) {
     'use strict';
 
-    function atAssessmentCtrl($scope, atAssessment, atSubmission, $mdToast) {
+    function atAssessmentCtrl($scope, atAssessment, atSubmission, $mdToast, AceConfig) {
+        $scope.AceConfig = AceConfig;
         atAssessment.load($scope.assessmentId).success(function () {
             $scope.assessment = atAssessment.current;
             atSubmission.resetCurrent();
             $scope.Submissions = atSubmission;
+            AceConfig.setLanguage(atAssessment.current.language);
         }).error(function () {
             $mdToast.show({
                 template: '<md-toast>Error !</md-toast>'
@@ -63,11 +65,36 @@
         this.$get = Assessment;
     }
 
+    function AceConfig() {
+        var service = {config: {}};
+
+        var configsByLanguages = {
+            'java': {
+                mode: 'java',
+                theme: 'eclipse',
+                require: ['ace/ext/language_tools'],
+                advanced: {
+                    enableSnippets: true,
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true
+                }
+            }
+        };
+
+        service.setLanguage = function (language) {
+            service.config = configsByLanguages[language];
+        };
+
+        return service;
+    }
+
 
     angular.module('at.assessment.editor', [
         'ui.ace',
         'at.assessment.submission'
-    ]).directive('atAssessmentEditor', atAssessmentEditor)
+    ])
+        .factory('AceConfig', AceConfig)
+        .directive('atAssessmentEditor', atAssessmentEditor)
         .controller('AssessmentController', atAssessmentCtrl)
         .provider('atAssessment', atAssessmentProvider);
 })(angular);
@@ -156,5 +183,5 @@
     angular.module('at.assessment.submission', [])
         .provider('atSubmission', SubmissionProvider);
 })(angular);
-angular.module("at.assessment").run(["$templateCache", function($templateCache) {$templateCache.put("app/assessment/assessment.tpl.html","<md-toolbar class=\"fixed-toolbar\">\n    <div class=\"md-toolbar-tools\">\n        {{ assessment.title }}\n        <span flex></span>\n        <md-button ng-if=\"false\">\n            Help\n        </md-button>\n        <md-button ng-click=\"reset()\">\n            Reset\n        </md-button>\n        <md-button class=\"md-button-colored\" ng-click=\"submit()\">\n            Submit code\n        </md-button>\n    </div>\n</md-toolbar>\n<md-content class=\"md-content-padding\" style=\"padding-top:66px;\">\n\n    <p>\n        {{ assessment.instructions }}\n    </p>\n\n    <section ng-repeat=\"compilationUnit in Submissions.current.compilationUnits\">\n        <section ui-ace=\"AceConfig\" ng-model=\"compilationUnit.code\" style=\"height:500px;width:100%;\"></section>\n    </section>\n\n    <section class=\"result\" ng-transclude ng-show=\"Submissions.current.result\">\n\n    </section>\n    <!--<submission-result></submission-result>-->\n\n</md-content>");
+angular.module("at.assessment").run(["$templateCache", function($templateCache) {$templateCache.put("app/assessment/assessment.tpl.html","<md-toolbar class=\"fixed-toolbar\">\n    <div class=\"md-toolbar-tools\">\n        {{ assessment.title }}\n        <span flex></span>\n        <md-button ng-if=\"false\">\n            Help\n        </md-button>\n        <md-button ng-click=\"reset()\">\n            Reset\n        </md-button>\n        <md-button class=\"md-button-colored\" ng-click=\"submit()\">\n            Submit code\n        </md-button>\n    </div>\n</md-toolbar>\n<md-content class=\"md-content-padding\" style=\"padding-top:66px;\">\n\n    <p>\n        {{ assessment.instructions }}\n    </p>\n\n    <section ng-repeat=\"compilationUnit in Submissions.current.compilationUnits\">\n        <section\n                ng-model=\"compilationUnit.code\"\n                ui-ace=\"AceConfig.config\"\n                style=\"height:500px;width:100%;font-size: 16px\"></section>\n    </section>\n\n    <section class=\"result\" ng-transclude ng-show=\"Submissions.current.result\">\n\n    </section>\n    <!--<submission-result></submission-result>-->\n\n</md-content>");
 $templateCache.put("app/submission/submissionProgressDialog.tpl.html","<md-dialog class=\"dialog-result\">\n    <md-toolbar class=\"md-theme-light\">\n        <div class=\"md-toolbar-tools\" layout=\"horizontal\" layout-align=\"center\">\n            <h3>\n                Work in progress....\n            </h3>\n        </div>\n    </md-toolbar>\n    <div class=\"dialog-content\">\n        <md-progress-linear mode=\"indeterminate\"></md-progress-linear>\n    </div>\n</md-dialog>");}]);

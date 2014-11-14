@@ -1,11 +1,13 @@
 (function (angular) {
     'use strict';
 
-    function atAssessmentCtrl($scope, atAssessment, atSubmission, $mdToast) {
+    function atAssessmentCtrl($scope, atAssessment, atSubmission, $mdToast, AceConfig) {
+        $scope.AceConfig = AceConfig;
         atAssessment.load($scope.assessmentId).success(function () {
             $scope.assessment = atAssessment.current;
             atSubmission.resetCurrent();
             $scope.Submissions = atSubmission;
+            AceConfig.setLanguage(atAssessment.current.language);
         }).error(function () {
             $mdToast.show({
                 template: '<md-toast>Error !</md-toast>'
@@ -55,11 +57,36 @@
         this.$get = Assessment;
     }
 
+    function AceConfig() {
+        var service = {config: {}};
+
+        var configsByLanguages = {
+            'java': {
+                mode: 'java',
+                theme: 'eclipse',
+                require: ['ace/ext/language_tools'],
+                advanced: {
+                    enableSnippets: true,
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true
+                }
+            }
+        };
+
+        service.setLanguage = function (language) {
+            service.config = configsByLanguages[language];
+        };
+
+        return service;
+    }
+
 
     angular.module('at.assessment.editor', [
         'ui.ace',
         'at.assessment.submission'
-    ]).directive('atAssessmentEditor', atAssessmentEditor)
+    ])
+        .factory('AceConfig', AceConfig)
+        .directive('atAssessmentEditor', atAssessmentEditor)
         .controller('AssessmentController', atAssessmentCtrl)
         .provider('atAssessment', atAssessmentProvider);
 })(angular);

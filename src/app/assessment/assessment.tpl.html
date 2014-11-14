@@ -20,7 +20,10 @@
     </p>
 
     <section ng-repeat="compilationUnit in Submissions.current.compilationUnits">
-        <section ui-ace="AceConfig" ng-model="compilationUnit.code" style="height:500px;width:100%;"></section>
+        <section
+                ng-model="compilationUnit.code"
+                ui-ace="AceConfig.config"
+                style="height:500px;width:100%;font-size: 16px"></section>
     </section>
 
     <section class="result" ng-transclude ng-show="Submissions.current.result">
