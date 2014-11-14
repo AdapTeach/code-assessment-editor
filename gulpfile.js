@@ -89,7 +89,7 @@ gulp.task('lint', function () {
 
 
 // DIST
-gulp.task('dist', [], function () {
+gulp.task('dist', ['cacheTemplates'], function () {
         runSequence(
             'cleanBuildFolder',
             'cleanDistFolder',
