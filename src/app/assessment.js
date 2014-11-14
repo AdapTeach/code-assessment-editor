@@ -6,7 +6,8 @@
             restrict: 'E',
             scope: {
                 assessment: '=',
-                submit: '='
+                onSubmit: '=',
+                onReset: '='
             },
             templateUrl: 'app/assessment.tpl.html',
             controller: 'AssessmentController'
@@ -33,6 +34,8 @@
                 };
                 $scope.submission.compilationUnits.push(compilationUnit);
             });
+            if (angular.isFunction($scope.onReset))
+                $scope.onReset();
         };
     }
 

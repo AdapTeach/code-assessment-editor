@@ -24,4 +24,7 @@ angular.module('demo.app', [
         $scope.submit = function (submission) {
             console.log(submission);
         };
+        $scope.reset = function () {
+            console.log('RESET');
+        }
     });

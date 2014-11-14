@@ -8,7 +8,7 @@
 </head>
 <body ng-app="demo.app" ng-controller="DemoAppController">
 
-<at-assessment-editor assessment="Assessments.current" submit="submit"></at-assessment-editor>
+<at-assessment-editor assessment="Assessments.current" on-submit="submit" on-reset="reset"></at-assessment-editor>
 
 <script src="../vendor/hammerjs/hammer.js"></script>
 <script src="../vendor/ace-builds/src-noconflict/ace.js"></script>
