@@ -8,7 +8,7 @@
                 assessment: '=',
                 submit: '='
             },
-            templateUrl: 'app/assessment/assessment.tpl.html',
+            templateUrl: 'app/assessment.tpl.html',
             controller: 'AssessmentController'
         };
     }
@@ -69,11 +69,3 @@
 })(angular);
 
 
-
-(function (angular) {
-
-    angular.module('at.assessment', [
-        'ngMaterial',
-        'at.assessment.editor'
-    ]);
-})(angular);

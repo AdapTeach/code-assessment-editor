@@ -2,7 +2,6 @@
 
     angular.module('at.assessment', [
         'ngMaterial',
-        'at.assessment.editor',
-        'at.assessment.submission'
+        'at.assessment.editor'
     ]);
 })(angular);

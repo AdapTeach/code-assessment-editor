@@ -44,9 +44,8 @@ gulp.task('dev', [
 });
 
 gulp.task('buildDev', [
-    'concatJs'
-    //,
-    //'concatTemplates'
+    'concatJs',
+    'cacheTemplates'
 ], function () {
 });
 
@@ -59,11 +58,10 @@ gulp.task('concatJs', function () {
         .pipe(refresh(lrserver));
 });
 
-gulp.task('concatTemplates', function () {
+gulp.task('cacheTemplates', function () {
     gulp.src(pathToTemplates)
-        .pipe(templateCache({module: 'demo.app'}))
+        .pipe(templateCache({module: 'at.assessment'}))
         .pipe(gulp.dest('src/build'))
-        .pipe(refresh(lrserver));
 });
 
 gulp.task('startDevServer', function () {
@@ -75,7 +73,7 @@ gulp.task('watchSource', function () {
     gulp.watch(pathToJsSource, ['concatJs', 'lint']);
     gulp.watch(pathToDemoJsSource, ['reloadIndex']);
     gulp.watch(pathToDemoIndexFile, ['reloadIndex']);
-    gulp.watch(pathToTemplates, ['concatTemplates']);
+    gulp.watch(pathToTemplates, ['cacheTemplates', 'reloadIndex']);
 });
 
 gulp.task('reloadIndex', function () {
@@ -91,21 +89,16 @@ gulp.task('lint', function () {
 
 
 // DIST
-gulp.task('dist', ['cacheTemplates'], function () {
+gulp.task('dist', [], function () {
         runSequence(
             'cleanBuildFolder',
             'cleanDistFolder',
+            'cacheTemplates',
             'distJs',
             'distMinifiedJs'
         );
     }
 );
-
-gulp.task('cacheTemplates', function () {
-    gulp.src(pathToTemplates)
-        .pipe(templateCache({module: 'at.assessment'}))
-        .pipe(gulp.dest('src/build'))
-});
 
 gulp.task('cleanBuildFolder', function (cb) {
     del('src/build', cb);

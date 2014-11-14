@@ -2,14 +2,26 @@ angular.module('demo.app', [
     'at.assessment'
 ])
 
-    .constant('BACKEND', {ASSESSMENT: 'http://codeassesser-adapteach.rhcloud.com/assess/'})
+    .factory('Assessments', function ($http) {
 
-    .config(function config(atAssessmentProvider, atSubmissionProvider, BACKEND) {
-        atAssessmentProvider.config({
-            baseUrl: BACKEND.ASSESSMENT
-        });
+        var Assessments = {};
 
-        atSubmissionProvider.config({
-            baseUrl: BACKEND.ASSESSMENT
-        });
+        Assessments.current = {};
+
+        Assessments.load = function (assessmentURL) {
+            return $http.get(assessmentURL).success(function (data) {
+                Assessments.current = data;
+            });
+        };
+
+        Assessments.load('http://codeassesser-adapteach.rhcloud.com/assess/helloWorld');
+
+        return Assessments;
+    })
+
+    .controller('DemoAppController', function ($scope, Assessments) {
+        $scope.Assessments = Assessments;
+        $scope.submit = function (submission) {
+            console.log(submission);
+        };
     });

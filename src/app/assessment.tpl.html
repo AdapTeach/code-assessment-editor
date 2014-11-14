@@ -8,7 +8,7 @@
         <md-button ng-click="reset()">
             Reset
         </md-button>
-        <md-button class="md-button-colored" ng-click="submit()">
+        <md-button class="md-button-colored" ng-click="submit(submission)">
             Submit code
         </md-button>
     </div>
@@ -19,14 +19,12 @@
         {{ assessment.instructions }}
     </p>
 
-    <section ng-repeat="compilationUnit in Submissions.current.compilationUnits">
+    <section ng-repeat="compilationUnit in submission.compilationUnits">
         <section
                 ng-model="compilationUnit.code"
                 ui-ace="AceConfig.config"
                 style="height:500px;width:100%;font-size: 16px"></section>
     </section>
-
-    <section class="result" ng-transclude ng-show="Submissions.current.result">
 
     </section>
     <!--<submission-result></submission-result>-->
