@@ -8,7 +8,7 @@
                 assessment: '=',
                 submit: '='
             },
-            templateUrl: 'app/assessment/assessment.tpl.html',
+            templateUrl: 'app/assessment.tpl.html',
             controller: 'AssessmentController'
         };
     }
