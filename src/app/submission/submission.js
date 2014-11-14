@@ -12,7 +12,7 @@
             var base = {
                     current: {
                         assessment: {},
-                        code: '',
+                        compilationUnits: [],
                         finished: false,
                         result: {}
                     }
@@ -21,15 +21,21 @@
             angular.extend(submission, base);
 
             submission.resetCurrent = function () {
-                submission.current = base;
-                submission.current.code = atAssessment.current.startCode;
+                submission.current.assessment = atAssessment.current;
+                angular.forEach(atAssessment.current.compilationUnitsToSubmit, function (compilationUnitToSubmit) {
+                    var compilationUnit = {
+                        name: compilationUnitToSubmit.name,
+                        code: compilationUnitToSubmit.startCode
+                    };
+                    submission.current.compilationUnits.push(compilationUnit);
+                });
             };
 
             submission.submitCurrent = function () {
-                return submission.submit(atAssessment.current, submission.current.code);
+                return submission.submit(atAssessment.current, submission.current.compilationUnits);
             };
 
-            submission.submit = function (assessment, submittedCode) {
+            submission.submit = function (assessment, compilationUnits) {
                 $mdDialog.hide();
                 $mdDialog.show({
                     templateUrl: 'app/submission/submissionProgressDialog.tpl.html',
@@ -38,12 +44,12 @@
                 });
                 submission.current = {
                     assessment: assessment,
-                    code: submittedCode,
+                    compilationUnits: compilationUnits,
                     finished: false,
                     result: {}
                 };
                 var body = {
-                    code: submittedCode
+                    compilationUnits: compilationUnits
                 };
                 return $http.post(options.baseUrl + assessment.id, body)
                     .success(function (data) {

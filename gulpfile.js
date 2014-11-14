@@ -75,7 +75,7 @@ gulp.task('watchSource', function () {
     gulp.watch(pathToJsSource, ['concatJs', 'lint']);
     gulp.watch(pathToDemoJsSource, ['reloadIndex']);
     gulp.watch(pathToDemoIndexFile, ['reloadIndex']);
-    gulp.watch(pathToTemplates, ['cacheTemplates']);
+    gulp.watch(pathToTemplates, ['concatTemplates']);
 });
 
 gulp.task('reloadIndex', function () {

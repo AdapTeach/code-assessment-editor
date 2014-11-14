@@ -4,7 +4,7 @@
     function atAssessmentCtrl($scope, atAssessment, atSubmission, $mdToast) {
         atAssessment.load($scope.assessmentId).success(function () {
             $scope.assessment = atAssessment.current;
-            atSubmission.current.code = angular.copy(atAssessment.current.startCode);
+            atSubmission.resetCurrent();
             $scope.Submissions = atSubmission;
         }).error(function () {
             $mdToast.show({

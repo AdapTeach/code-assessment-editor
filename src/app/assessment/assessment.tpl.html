@@ -19,7 +19,9 @@
         {{ assessment.instructions }}
     </p>
 
-    <section ui-ace="AceConfig" ng-model="Submissions.current.code" style="height:500px;width:100%;"></section>
+    <section ng-repeat="compilationUnit in Submissions.current.compilationUnits">
+        <section ui-ace="AceConfig" ng-model="compilationUnit.code" style="height:500px;width:100%;"></section>
+    </section>
 
     <section class="result" ng-transclude ng-show="Submissions.current.result">
 
