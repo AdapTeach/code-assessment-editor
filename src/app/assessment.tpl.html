@@ -13,17 +13,25 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content class="md-content-padding" style="padding-top:66px;">
+<md-content class="md-content-padding" style="padding-top:20px;">
 
-    <p>
-        {{ assessment.instructions }}
-    </p>
+    {{ assessment.instructions }}
 
-    <section ng-repeat="compilationUnit in submission.compilationUnits">
+    <section ng-repeat="compilationUnit in assessment.providedCompilationUnits" style="padding-top:10px;">
+        <h3>{{ compilationUnit.name }}.java</h3>
         <section
                 ng-model="compilationUnit.code"
                 ui-ace="AceConfig.config"
-                style="height:500px;width:100%;font-size: 16px"></section>
+                readonly="true"
+                style="height:300px;width:100%;font-size: 16px"></section>
+    </section>
+
+    <section ng-repeat="compilationUnit in submission.compilationUnits" style="padding-top:10px;">
+        <h3>{{ compilationUnit.name }}.java</h3>
+        <section
+                ng-model="compilationUnit.code"
+                ui-ace="AceConfig.config"
+                style="height:300px;width:100%;font-size: 16px"></section>
     </section>
 
     </section>

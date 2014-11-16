@@ -14,7 +14,7 @@ angular.module('demo.app', [
             });
         };
 
-        Assessments.load('http://codeassesser-adapteach.rhcloud.com/assess/helloWorld');
+        Assessments.load('http://codeassesser-adapteach.rhcloud.com/assess/inheritance');
 
         return Assessments;
     })
