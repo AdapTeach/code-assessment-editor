@@ -28,9 +28,10 @@ devServer.all('/*', function (req, res) {
 
 // PATHS
 var pathToJsSource = 'src/app/**/*.js',
+    pathToTemplates = 'src/app/**/*.tpl.html',
+    pathToStyle = 'src/app/style.css',
     pathToDemoJsSource = 'src/demo/**/*.js',
-    pathToDemoIndexFile = 'src/demo/index.html',
-    pathToTemplates = 'src/**/*.tpl.html';
+    pathToDemoIndexFile = 'src/demo/index.html';
 
 // DEV
 gulp.task('default', ['dev'], function () {
@@ -74,6 +75,7 @@ gulp.task('watchSource', function () {
     gulp.watch(pathToDemoJsSource, ['reloadIndex']);
     gulp.watch(pathToDemoIndexFile, ['reloadIndex']);
     gulp.watch(pathToTemplates, ['cacheTemplates', 'reloadIndex']);
+    gulp.watch(pathToStyle, ['reloadIndex']);
 });
 
 gulp.task('reloadIndex', function () {
@@ -94,8 +96,11 @@ gulp.task('dist', ['cacheTemplates'], function () {
             'cleanBuildFolder',
             'cleanDistFolder',
             'cacheTemplates',
-            'distJs',
-            'distMinifiedJs'
+            [
+                'distJs',
+                'distMinifiedJs',
+                'distStyle'
+            ]
         );
     }
 );
@@ -119,5 +124,10 @@ gulp.task('distMinifiedJs', function () {
         .pipe(concat('at-code-assessment-min.js'))
         .pipe(annotate())
         .pipe(uglify())
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('distStyle', function () {
+    gulp.src('src/app/style.css')
         .pipe(gulp.dest('dist'));
 });

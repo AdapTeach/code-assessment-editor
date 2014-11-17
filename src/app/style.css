@@ -1,0 +1,9 @@
+.ace_editor {
+    height: 300px;
+    font-size: 16px !important;
+}
+
+.fixed-toolbar {
+    position: fixed;
+    z-index: 10;
+}
