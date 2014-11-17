@@ -9,7 +9,7 @@
                 onSubmit: '=',
                 onReset: '='
             },
-            templateUrl: 'app/assessment.tpl.html',
+            templateUrl: 'assessment.tpl.html',
             controller: 'AssessmentController'
         };
     }
