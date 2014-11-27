@@ -30,7 +30,7 @@
             angular.forEach($scope.assessment.compilationUnitsToSubmit, function (compilationUnitToSubmit) {
                 var compilationUnit = {
                     name: compilationUnitToSubmit.name,
-                    code: compilationUnitToSubmit.startCode
+                    code: compilationUnitToSubmit.code
                 };
                 $scope.submission.compilationUnits.push(compilationUnit);
             });
