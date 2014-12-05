@@ -116,6 +116,7 @@ gulp.task('cleanDistFolder', function (cb) {
 gulp.task('distJs', function () {
     gulp.src([pathToJsSource, 'src/build/templates.js'])
         .pipe(concat('at-code-assessment.js'))
+        .pipe(annotate())
         .pipe(gulp.dest('dist'));
 });
 
