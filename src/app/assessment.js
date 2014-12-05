@@ -25,7 +25,7 @@
             AceConfig.setLanguage($scope.assessment.language);
             $scope.submission = {
                 assessment: $scope.assessment,
-                compilationUnits: []
+                submittedCompilationUnits: []
             };
             angular.forEach($scope.assessment.compilationUnitsToSubmit, function (compilationUnitToSubmit) {
                 var compilationUnit = {
