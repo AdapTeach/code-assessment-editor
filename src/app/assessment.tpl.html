@@ -25,7 +25,7 @@
                 readonly="true"></section>
     </section>
 
-    <section ng-repeat="compilationUnit in submission.compilationUnits" style="padding-top:10px;">
+    <section ng-repeat="compilationUnit in submission.submittedCompilationUnits" style="padding-top:10px;">
         <h3>{{ compilationUnit.name }}.java</h3>
         <section
                 ng-model="compilationUnit.code"
