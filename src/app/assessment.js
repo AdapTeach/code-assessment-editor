@@ -32,7 +32,7 @@
                     name: compilationUnitToSubmit.name,
                     code: compilationUnitToSubmit.code
                 };
-                $scope.submission.compilationUnits.push(compilationUnit);
+                $scope.submission.submittedCompilationUnits.push(compilationUnit);
             });
             if (angular.isFunction($scope.onReset))
                 $scope.onReset();
