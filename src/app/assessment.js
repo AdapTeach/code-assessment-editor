@@ -1,4 +1,3 @@
-(function (angular) {
     'use strict';
 
     function atAssessmentEditor() {
@@ -69,6 +68,5 @@
         .factory('AceConfig', AceConfig)
         .directive('atAssessmentEditor', atAssessmentEditor)
         .controller('AssessmentController', atAssessmentCtrl);
-})(angular);
 
 

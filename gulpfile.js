@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-    concat = require('gulp-concat'),
+    concat = require('gulp-concat-util'),
     jshint = require('gulp-jshint'),
     runSequence = require('run-sequence'),
     del = require('del'),
@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     lrserver = require('tiny-lr')(),
     express = require('express'),
     refresh = require('gulp-livereload'),
-    livereload = require('connect-livereload');
+    livereload = require('connect-livereload'),
+    pkg = require('./package.json');
 
 
 var livereloadport = 35729,
@@ -115,20 +116,39 @@ gulp.task('cleanDistFolder', function (cb) {
 
 gulp.task('distJs', function () {
     gulp.src([pathToJsSource, 'src/build/templates.js'])
-        .pipe(concat('at-code-assessment.js'))
         .pipe(annotate())
+        .pipe(concat('at-code-assessment.js', {process: function(src) { return (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1'); }}))
+        .pipe(concat.header(['/**',
+            ' * '+pkg.name+' - '+pkg.description,
+            ' * @version v '+ pkg.version,
+            ' * @link '+pkg.homepage,
+            ' * @license '+pkg.license,
+            ' */',
+            '(function(angular,document) {\'use strict\';\n'
+        ].join('\n')))
+        .pipe(concat.footer('\n})(angular, document);\n'))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('distMinifiedJs', function () {
     gulp.src([pathToJsSource, 'src/build/templates.js'])
-        .pipe(concat('at-code-assessment-min.js'))
         .pipe(annotate())
         .pipe(uglify())
+        .pipe(concat('at-code-assessment-min.js', {process: function(src) { return (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1'); }}))
+        .pipe(concat.header(['/**',
+            ' * '+pkg.name+' - '+pkg.description,
+            ' * @version v '+ pkg.version,
+            ' * @link '+pkg.homepage,
+            ' * @license '+pkg.license,
+            ' */',
+            '(function(angular,document) {\'use strict\';\n'
+        ].join('\n')))
+        .pipe(concat.footer('\n})(angular, document);\n'))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('distStyle', function () {
     gulp.src('src/app/style.css')
+        .pipe(concat('at-code-assessment.css'))
         .pipe(gulp.dest('dist'));
 });
