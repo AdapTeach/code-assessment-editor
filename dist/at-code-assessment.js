@@ -18,7 +18,10 @@ function atAssessmentEditor() {
         };
     }
 
-    function atAssessmentCtrl($scope, AceConfig) {
+    function atAssessmentCtrl($scope, AceConfig, $sce) {
+
+        $scope.instructions = $sce.trustAsHtml($scope.assessment.instructions);
+
         $scope.AceConfig = AceConfig;
 
         $scope.$watch('assessment', function () {
@@ -42,7 +45,7 @@ function atAssessmentEditor() {
                 $scope.onReset();
         };
     }
-    atAssessmentCtrl.$inject = ["$scope", "AceConfig"];
+    atAssessmentCtrl.$inject = ["$scope", "AceConfig", "$sce"];
 
     function AceConfig() {
         var service = {config: {}};
@@ -80,6 +83,6 @@ angular.module('at.assessment', [
         'at.assessment.editor'
     ]);
 
-angular.module("at.assessment").run(["$templateCache", function($templateCache) {$templateCache.put("assessment.tpl.html","<md-toolbar class=\"fixed-toolbar\">\n    <div class=\"md-toolbar-tools\">\n        {{ assessment.title }}\n        <span flex></span>\n        <md-button ng-if=\"false\">\n            Help\n        </md-button>\n        <md-button ng-click=\"reset()\">\n            Reset\n        </md-button>\n        <md-button class=\"md-button-colored\" ng-click=\"onSubmit(submission)\">\n            Submit code\n        </md-button>\n    </div>\n</md-toolbar>\n<md-content class=\"md-content-padding\" style=\"padding-top:80px;\">\n\n    {{ assessment.instructions }}\n\n    <section ng-repeat=\"compilationUnit in assessment.providedCompilationUnits\" style=\"padding-top:10px;\">\n        <h3>{{ compilationUnit.name }}.java (read only)</h3>\n        <section\n                ng-model=\"compilationUnit.code\"\n                ui-ace=\"AceConfig.config\"\n                readonly=\"true\"></section>\n    </section>\n\n    <section ng-repeat=\"compilationUnit in submission.submittedCompilationUnits\" style=\"padding-top:10px;\">\n        <h3>{{ compilationUnit.name }}.java</h3>\n        <section\n                ng-model=\"compilationUnit.code\"\n                ui-ace=\"AceConfig.config\"></section>\n    </section>\n\n    </section>\n\n</md-content>");}]);
+angular.module("at.assessment").run(["$templateCache", function($templateCache) {$templateCache.put("assessment.tpl.html","<md-toolbar class=\"fixed-toolbar\">\n    <div class=\"md-toolbar-tools\">\n        {{ assessment.title }}\n        <span flex></span>\n        <md-button ng-if=\"false\">\n            Help\n        </md-button>\n        <md-button ng-click=\"reset()\">\n            Reset\n        </md-button>\n        <md-button class=\"md-button-colored\" ng-click=\"onSubmit(submission)\">\n            Submit code\n        </md-button>\n    </div>\n</md-toolbar>\n<md-content class=\"md-content-padding\" style=\"padding-top:80px;\">\n    <p ng-bind-html=\"instructions\">\n    </p>\n    <section ng-repeat=\"compilationUnit in assessment.providedCompilationUnits\" style=\"padding-top:10px;\">\n        <h3>{{ compilationUnit.name }}.java (read only)</h3>\n        <section\n                ng-model=\"compilationUnit.code\"\n                ui-ace=\"AceConfig.config\"\n                readonly=\"true\"></section>\n    </section>\n\n    <section ng-repeat=\"compilationUnit in submission.submittedCompilationUnits\" style=\"padding-top:10px;\">\n        <h3>{{ compilationUnit.name }}.java</h3>\n        <section\n                ng-model=\"compilationUnit.code\"\n                ui-ace=\"AceConfig.config\"></section>\n    </section>\n\n    </section>\n\n</md-content>");}]);
 
 })(angular, document);

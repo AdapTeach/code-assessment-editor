@@ -13,7 +13,10 @@
         };
     }
 
-    function atAssessmentCtrl($scope, AceConfig) {
+    function atAssessmentCtrl($scope, AceConfig, $sce) {
+
+        $scope.instructions = $sce.trustAsHtml($scope.assessment.instructions);
+
         $scope.AceConfig = AceConfig;
 
         $scope.$watch('assessment', function () {

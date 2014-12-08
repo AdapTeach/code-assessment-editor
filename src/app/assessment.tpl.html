@@ -14,9 +14,8 @@
     </div>
 </md-toolbar>
 <md-content class="md-content-padding" style="padding-top:80px;">
-
-    {{ assessment.instructions }}
-
+    <p ng-bind-html="instructions">
+    </p>
     <section ng-repeat="compilationUnit in assessment.providedCompilationUnits" style="padding-top:10px;">
         <h3>{{ compilationUnit.name }}.java (read only)</h3>
         <section
